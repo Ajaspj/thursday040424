@@ -10,7 +10,6 @@ class HomeScreencontroller {
   static Future<void> initDb() async {
     Database database = await openDatabase("sample.db", version: 1,
         onCreate: (Database db, int version) async {
-      // When creating the db, create the table
       await db.execute(
           'CREATE TABLE Student (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
     });
@@ -18,11 +17,9 @@ class HomeScreencontroller {
 
   static Future addData() async {
     await database.rawInsert(
-        'INSERT INTO Student(name, phoneNumber) VALUES(?, ?)',
-        ['sdfghj', 345678]);
+        'INSERT INTO Student(name, phoneNumber) VALUES(?, ?)', ['ajas', 11154]);
   }
 
-  //get all data from databse
   static Future getAllData() async {
     data = await database.rawQuery('SELECT * FROM Student');
     studentlist = data
@@ -40,7 +37,6 @@ class HomeScreencontroller {
   }
 
   static Future editData(var id) async {
-    // Update some record
     await database.rawUpdate(
         'UPDATE Student SET name = ?, phoneNumber = ? WHERE id = ?',
         ['editted', '9876', id]);
