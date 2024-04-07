@@ -10,30 +10,58 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initstate() {
-    fetchData();
-    super.initState();
-  }
-
-  fetchData() async {
-    await HomeScreencontroller.getData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await HomeScreencontroller.getAllData();
+                  setState(() {});
+                },
+                child: const Text('get data'),
+              ),
+              ...List.generate(
+                HomeScreencontroller.studentlist.length,
+                (index) => ListTile(
+                  title: Text(HomeScreencontroller.studentlist[index].name),
+                  subtitle: Text(
+                      HomeScreencontroller.studentlist[index].ph.toString()),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          await HomeScreencontroller.editData(
+                              HomeScreencontroller.studentlist[index].id);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          await HomeScreencontroller.deleteData(
+                              HomeScreencontroller.studentlist[index].id);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          HomeScreencontroller.addData();
+        onPressed: () async {
+          await HomeScreencontroller.addData();
           setState(() {});
         },
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Column(children: List.generate(10, (index) => Text("bsbb"))),
-          ],
-        ),
       ),
     );
   }
